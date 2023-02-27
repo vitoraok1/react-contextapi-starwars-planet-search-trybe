@@ -5,6 +5,8 @@ import StarWarsContext from './starWarsContext';
 
 function StarWarsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
+  const [filteredByName, setFilterByName] = useState('');
 
   useEffect(() => {
     FetchAPI('https://swapi.dev/api/planets/')
@@ -15,8 +17,23 @@ function StarWarsProvider({ children }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (filteredByName === '') {
+      setFilteredPlanets(planets);
+    } else {
+      const planetsFilteredByName = planets
+        .filter((planet) => planet.name
+          .includes((filteredByName)));
+      setFilteredPlanets(planetsFilteredByName);
+    }
+  }, [planets, filteredByName]);
+
   const context = {
     planets,
+    filteredPlanets,
+    filteredByName,
+    setFilterByName,
+    setFilteredPlanets,
   };
 
   return (

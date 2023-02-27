@@ -24,10 +24,8 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {planets.map((planet) => (
-            <tr
-              key={ planet.name }
-            >
+          {planets.map((planet, index1) => (
+            <tr key={ index1 }>
               <td>
                 { planet.name }
               </td>
@@ -40,8 +38,8 @@ export default function Table() {
               <td>{ planet.surface_water }</td>
               <td>{ planet.population }</td>
               <td>
-                {planet.films.map((url, index) => (
-                  <span key={ index }>
+                {planet.films.map((url, index2) => (
+                  <span key={ index2 }>
                     <a href={ url }>{ url }</a>
                   </span>
                 ))}

@@ -2,16 +2,10 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/starWarsContext';
 
 export default function Table() {
-  const { filteredPlanets, setFilterByName } = useContext(StarWarsContext);
+  const { filteredPlanets } = useContext(StarWarsContext);
 
   return (
     <section>
-      <input
-        type="text"
-        data-testid="name-filter"
-        placeholder="Procure um planeta"
-        onChange={ ({ target: { value } }) => setFilterByName(value) }
-      />
       <table>
         <thead>
           <tr>
@@ -31,7 +25,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredPlanets.map((planet, index1) => (
+          {filteredPlanets?.map((planet, index1) => (
             <tr key={ index1 }>
               <td>
                 { planet.name }

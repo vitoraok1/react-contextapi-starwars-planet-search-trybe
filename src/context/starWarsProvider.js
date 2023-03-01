@@ -12,8 +12,7 @@ function StarWarsProvider({ children }) {
   useEffect(() => {
     FetchAPI()
       .then((data) => {
-        const dataResults = data;
-        setPlanets(dataResults);
+        setPlanets(data);
       });
   }, []);
 

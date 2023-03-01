@@ -3,6 +3,7 @@ const FetchAPI = async () => {
     const response = await fetch('https://swapi.dev/api/planets');
     const data = await response.json();
     Object.entries(data.results).forEach((planet) => delete planet[1].residents);
+    console.log(data.results);
     return data.results;
   } catch (error) {
     console.log(error);

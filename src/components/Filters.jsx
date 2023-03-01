@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/starWarsContext';
+import Trash from '../icons/trash';
 
 export default function NameFilter() {
   const categoryOptions = [
@@ -127,7 +128,7 @@ export default function NameFilter() {
             type="button"
             onClick={ () => handleDelete(index) }
           >
-            X
+            <Trash />
           </button>
           {' '}
           <span>{ filter.category }</span>

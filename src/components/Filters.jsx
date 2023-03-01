@@ -55,6 +55,16 @@ export default function NameFilter() {
     setInputValues({ ...inputValues, category: actualArray[0] });
   };
 
+  const handleDelete = (index) => {
+    const filters = filterByNumericValues
+      .filter((_filter, filterIndex) => filterIndex !== index);
+    setFilterByNumericValues(filters);
+  };
+
+  const removeAllFilters = () => {
+    setFilterByNumericValues([]);
+  };
+
   return (
     <div>
       <input
@@ -101,6 +111,32 @@ export default function NameFilter() {
       >
         Filtrar
       </button>
+
+      { filterByNumericValues.length > 0 && (
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ removeAllFilters }
+        >
+          Remover Filtros
+        </button>
+      )}
+      { filterByNumericValues.map((filter, index) => (
+        <div key={ index } data-testid="filter">
+          <button
+            type="button"
+            onClick={ () => handleDelete(index) }
+          >
+            X
+          </button>
+          {' '}
+          <span>{ filter.category }</span>
+          {' '}
+          <span>{ filter.comparison }</span>
+          {' '}
+          <span>{ filter.value }</span>
+        </div>
+      ))}
     </div>
   );
 }

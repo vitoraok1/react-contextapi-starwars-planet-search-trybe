@@ -2,7 +2,30 @@ import React, { useContext } from 'react';
 import StarWarsContext from '../context/starWarsContext';
 
 export default function Table() {
-  const { filteredPlanets } = useContext(StarWarsContext);
+  const {
+    filteredPlanets,
+    filterByNumericValues,
+  } = useContext(StarWarsContext);
+
+  const showFilteredPlanets = () => {
+    const filterByComparison = filteredPlanets.filter((planet) => {
+      const filterPlanetByComparison = filterByNumericValues
+        .map(({ category, comparison, value }) => {
+          switch (comparison) {
+          case 'maior que':
+            return Number(planet[category]) > Number(value);
+          case 'menor que':
+            return Number(planet[category]) < Number(value);
+          case 'igual a':
+            return Number(planet[category]) === Number(value);
+          default:
+            return true;
+          }
+        });
+      return filterPlanetByComparison.every((item) => item);
+    });
+    return filterByComparison;
+  };
 
   return (
     <section>
@@ -25,7 +48,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {filteredPlanets?.map((planet, index1) => (
+          {showFilteredPlanets().map((planet, index1) => (
             <tr key={ index1 }>
               <td>
                 { planet.name }

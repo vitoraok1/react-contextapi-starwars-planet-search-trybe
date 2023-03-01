@@ -1,48 +1,58 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import StarWarsContext from '../context/starWarsContext';
 
 export default function NameFilter() {
+  const categoryOptions = [
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ];
+
+  const comparisionOptions = [
+    'maior que',
+    'menor que',
+    'igual a',
+  ];
+
   const {
     setInputName,
-    setSelectedCategory,
-    setSelectedComparison,
-    setInputValue,
     setFilterByNumericValues,
-    setColumnOptions,
-    columnOptions,
-    filterComparisonOptions,
-    selectedCategory,
-    selectedComparison,
-    inputValue,
     filterByNumericValues,
   } = useContext(StarWarsContext);
+
+  const [inputValues, setInputValues] = useState({
+    category: 'population',
+    comparison: 'maior que',
+    value: '0',
+  });
+
+  const [filterValues, setFilterValues] = useState(categoryOptions);
 
   const handleChange = ({ target }) => {
     const { value } = target;
 
     if (target.id === 'input-name') setInputName(value);
 
-    if (target.id === 'select-column') setSelectedCategory(value);
+    if (target.id === 'select-column') {
+      setInputValues({ ...inputValues, category: value });
+    }
 
-    if (target.id === 'select-comparison') setSelectedComparison(value);
+    if (target.id === 'select-comparison') {
+      setInputValues({ ...inputValues, comparison: value });
+    }
 
-    if (target.id === 'input-value') setInputValue(value);
+    if (target.id === 'input-value') {
+      setInputValues({ ...inputValues, value });
+    }
   };
 
   const handleSearch = () => {
-    const infosFromFilter = {
-      column: selectedCategory,
-      comparison: selectedComparison,
-      value: inputValue,
-    };
-
-    const resultFilter = filterByNumericValues
-      .find((filter) => filter.column === selectedCategory);
-
-    if (!resultFilter) {
-      setColumnOptions(columnOptions.filter((item) => item !== selectedCategory));
-      setFilterByNumericValues((previousState) => [...previousState, infosFromFilter]);
-    }
+    setFilterByNumericValues([...filterByNumericValues, inputValues]);
+    const actualArray = filterValues.filter((value) => value !== inputValues.category);
+    setFilterValues(actualArray);
+    setInputValues({ ...inputValues, category: actualArray[0] });
   };
 
   return (
@@ -60,7 +70,7 @@ export default function NameFilter() {
         id="select-column"
         onChange={ handleChange }
       >
-        { columnOptions.map((option, index) => (
+        { filterValues.map((option, index) => (
           <option value={ option } key={ index }>{ option }</option>
         )) }
       </select>
@@ -70,7 +80,7 @@ export default function NameFilter() {
         id="select-comparison"
         onChange={ handleChange }
       >
-        { filterComparisonOptions.map((option, index) => (
+        { comparisionOptions.map((option, index) => (
           <option value={ option } key={ index }>{ option }</option>
         )) }
       </select>
@@ -80,7 +90,7 @@ export default function NameFilter() {
         data-testid="value-filter"
         placeholder="Insira um número"
         id="input-value"
-        value={ inputValue }
+        value={ inputValues.value }
         onChange={ handleChange }
       />
 
